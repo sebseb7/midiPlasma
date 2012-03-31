@@ -19,6 +19,8 @@ void getLedXY(uint8_t x, uint8_t y, uint8_t* red,uint8_t* green, uint8_t* blue);
 void registerAnimation(tick_fun tick, uint16_t t, uint16_t duration);
 void registerApp(tick_fun tick, uint16_t t);
 void pollKeyboard(void);
+void button(uint8_t);
+unsigned long long int get_clock(void);
 
 
 uint8_t chan1 ;

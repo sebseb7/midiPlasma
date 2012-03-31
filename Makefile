@@ -7,7 +7,6 @@ BINEXT=
 ifeq ($(UNAME), Darwin)
 	FLAGS   += -I/Library/Frameworks/SDL.framework/Headers
 	LDFLAGS += -lportmidi -framework SDL -framework Cocoa SDLmain.m
-#	LDFLAGS +=  finddefault.o pmmac.o portmidi.o pmutil.o porttime.o readbinaryplist.o pmmacosxcm.o ptmacosx_mach.o -framework SDL -framework Cocoa -framework CoreServices -framework CoreAudio -framework CoreMIDI SDLmain.m
 endif
 
 ifeq ($(UNAME), Linux)

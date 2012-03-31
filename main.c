@@ -4,13 +4,18 @@
 #include <assert.h>
 #include <time.h>
 #include <SDL/SDL.h>
+#include <sys/time.h>
 
 #include "main.h"
 #include "keyboard.h"
 
-#include <unistd.h>
-#include <sys/time.h>
 
+#define MAX_NUMBER_OF_APPS 20
+
+uint8_t (*appTick_fp[MAX_NUMBER_OF_APPS])(void);
+uint16_t appInterval_duration[MAX_NUMBER_OF_APPS];
+uint8_t apps = 0;
+uint8_t current_app = 0;
 
 unsigned long long int get_clock(void)
 {
@@ -21,8 +26,7 @@ unsigned long long int get_clock(void)
 
 
 int leds[LED_HEIGHT][LED_WIDTH][4];
-int interval;
-tick_fun tick_fp;
+
 SDL_Surface* screen;
 
 void setLedXY(uint8_t x, uint8_t y, uint8_t red,uint8_t green, uint8_t blue) {
@@ -43,11 +47,16 @@ void getLedXY(uint8_t x, uint8_t y, uint8_t* red,uint8_t* green, uint8_t* blue) 
 
 void registerAnimation(tick_fun tick, uint16_t t, uint16_t ignore)
 {
-	tick_fp = tick;
-
 	assert(t > 0);
-	// 122Hz / tick
-	interval = 1000000 / 122 * t;
+	if(apps < MAX_NUMBER_OF_APPS)
+	{
+		printf("reg\n");
+		appTick_fp[apps] = tick;
+		// 122Hz / tick
+		appInterval_duration[apps]=10000000 / 122 * t;
+	
+		apps++;
+	}
 }
 
 
@@ -98,7 +107,7 @@ int main(int argc, char *argv[]) {
 
 		pollKeyboard();
 
-		running &= !tick_fp();
+		running &= !appTick_fp[current_app]();
 
 		for(x = 0; x < LED_WIDTH; x++) {
 			for(y = 0; y < LED_HEIGHT; y++) {
@@ -119,8 +128,11 @@ int main(int argc, char *argv[]) {
 			}
 		}
 
-		startTime+=interval;
+		startTime+=appInterval_duration[current_app];
 		int delay = startTime-get_clock();
+
+
+		printf("%i\n",delay);
 		if(delay > 0)
 			usleep(delay);
 		
@@ -147,74 +159,87 @@ void pollKeyboard(void)
 			{
 				chan1 = e.y;
 			}
-			if(e.x == 3)
+			else if(e.x == 3)
 			{
 				chan2 = e.y;
 			}
-			if(e.x == 4)
+			else if(e.x == 4)
 			{
 				chan3 = e.y;
 			}
-			if(e.x == 5)
+			else if(e.x == 5)
 			{
 				chan4 = e.y;
 			}
-			if(e.x == 6)
+			else if(e.x == 6)
 			{
 				chan5 = e.y;
 			}
-			if(e.x == 8)
+			else if(e.x == 8)
 			{
 				chan6 = e.y;
 			}
-			if(e.x == 9)
+			else if(e.x == 9)
 			{
 				chan7 = e.y;
 			}
-			if(e.x == 12)
+			else if(e.x == 12)
 			{
 				chan8 = e.y;
 			}
-			if(e.x == 13)
+			else if(e.x == 13)
 			{
 				chan9 = e.y;
 			}
-			if(e.x == 14)
+			else if(e.x == 14)
 			{
 				chana1 = e.y;
 			}
-			if(e.x == 15)
+			else if(e.x == 15)
 			{
 				chana2 = e.y;
 			}
-			if(e.x == 16)
+			else if(e.x == 16)
 			{
 				chana3 = e.y;
 			}
-			if(e.x == 17)
+			else if(e.x == 17)
 			{
 				chana4 = e.y;
 			}
-			if(e.x == 18)
+			else if(e.x == 18)
 			{
 				chana5 = e.y;
 			}
-			if(e.x == 19)
+			else if(e.x == 19)
 			{
 				chana6 = e.y;
 			}
-			if(e.x == 20)
+			else if(e.x == 20)
 			{
 				chana7 = e.y;
 			}
-			if(e.x == 21)
+			else if(e.x == 21)
 			{
 				chana8 = e.y;
 			}
-			if(e.x == 22)
+			else if(e.x == 22)
 			{
 				chana9 = e.y;
 			}
+			else if((e.x >= 22)&&(e.x <= 41)&&(e.y == 127))
+			{
+				button(e.x-22);
+			}
 		}
+	}
+}
+
+void button(uint8_t nr)
+{
+	printf("button %i\n",nr);
+	if(nr <= apps)
+	{
+		current_app = nr-1;
 	}
 }
