@@ -6,7 +6,8 @@ BINEXT=
 
 ifeq ($(UNAME), Darwin)
 	FLAGS   += -I/Library/Frameworks/SDL.framework/Headers
-	LDFLAGS +=  -lportmidi  -framework SDL -framework Cocoa SDLmain.m
+	LDFLAGS += -lportmidi -framework SDL -framework Cocoa SDLmain.m
+#	LDFLAGS +=  finddefault.o pmmac.o portmidi.o pmutil.o porttime.o readbinaryplist.o pmmacosxcm.o ptmacosx_mach.o -framework SDL -framework Cocoa -framework CoreServices -framework CoreAudio -framework CoreMIDI SDLmain.m
 endif
 
 ifeq ($(UNAME), Linux)
@@ -19,6 +20,8 @@ ifeq ($(UNAME), MINGW32_NT-6.1)
 	BINEXT = .exe
 endif
 
+APP_SOURCES=$(wildcard apps/*.c)
+
 LIB_SOURCES=$(wildcard libs/*.c)
 LIB_HEADERS=$(wildcard libs/*.h)
 
@@ -27,6 +30,6 @@ all: midiPlasma
 clean:
 	rm -f midiPlasma
 
-midiPlasma: main.c midiPlasma.c main.h Makefile $(LIB_HEADERS) $(LIB_SOURCES)
-	gcc $(FLAGS) main.c midiPlasma.c $(LDFLAGS) -o midiPlasma -I. $(LIB_SOURCES) -Ilibs
+midiPlasma: main.c main.h Makefile $(LIB_HEADERS) $(LIB_SOURCES) $(APP_SOURCES) 
+	clang $(FLAGS) main.c $(APP_SOURCES) $(LDFLAGS) -o midiPlasma -I. $(LIB_SOURCES) -Ilibs
 

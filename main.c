@@ -6,6 +6,7 @@
 #include <SDL/SDL.h>
 
 #include "main.h"
+#include "keyboard.h"
 
 #include <unistd.h>
 #include <sys/time.h>
@@ -53,6 +54,9 @@ void registerAnimation(tick_fun tick, uint16_t t, uint16_t ignore)
 int main(int argc, char *argv[]) {
 	int x, y;
 
+	keyboard_init();
+
+
 	for(x = 0; x < LED_WIDTH; x++) {
 		for(y = 0; y < LED_HEIGHT; y++) {
 			leds[y][x][0]=0;
@@ -92,6 +96,8 @@ int main(int argc, char *argv[]) {
 			}
 		}
 
+		pollKeyboard();
+
 		running &= !tick_fp();
 
 		for(x = 0; x < LED_WIDTH; x++) {
@@ -125,3 +131,90 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
+
+void pollKeyboard(void)
+{
+	KeyboardEvent e;
+
+	while(keyboard_poll(&e)) 
+	{
+		printf("%d %d %d\n", e.x, e.y,e.type);
+//		fflush(stdout);
+		
+		if(e.type == 176)
+		{
+			if(e.x == 2)
+			{
+				chan1 = e.y;
+			}
+			if(e.x == 3)
+			{
+				chan2 = e.y;
+			}
+			if(e.x == 4)
+			{
+				chan3 = e.y;
+			}
+			if(e.x == 5)
+			{
+				chan4 = e.y;
+			}
+			if(e.x == 6)
+			{
+				chan5 = e.y;
+			}
+			if(e.x == 8)
+			{
+				chan6 = e.y;
+			}
+			if(e.x == 9)
+			{
+				chan7 = e.y;
+			}
+			if(e.x == 12)
+			{
+				chan8 = e.y;
+			}
+			if(e.x == 13)
+			{
+				chan9 = e.y;
+			}
+			if(e.x == 14)
+			{
+				chana1 = e.y;
+			}
+			if(e.x == 15)
+			{
+				chana2 = e.y;
+			}
+			if(e.x == 16)
+			{
+				chana3 = e.y;
+			}
+			if(e.x == 17)
+			{
+				chana4 = e.y;
+			}
+			if(e.x == 18)
+			{
+				chana5 = e.y;
+			}
+			if(e.x == 19)
+			{
+				chana6 = e.y;
+			}
+			if(e.x == 20)
+			{
+				chana7 = e.y;
+			}
+			if(e.x == 21)
+			{
+				chana8 = e.y;
+			}
+			if(e.x == 22)
+			{
+				chana9 = e.y;
+			}
+		}
+	}
+}
