@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-#define LED_WIDTH	128
-#define LED_HEIGHT	128
+#define LED_WIDTH	203
+#define LED_HEIGHT	125
 
 // multiple of 15
 #define ZOOM 6

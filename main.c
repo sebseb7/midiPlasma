@@ -155,81 +155,81 @@ void pollKeyboard(void)
 		
 		if(e.type == 176)
 		{
-			if(e.x == 2)
+			if(e.x == 1)
 			{
 				chan1 = e.y;
 			}
-			else if(e.x == 3)
+			else if(e.x == 2)
 			{
 				chan2 = e.y;
 			}
-			else if(e.x == 4)
+			else if(e.x == 3)
 			{
 				chan3 = e.y;
 			}
-			else if(e.x == 5)
+			else if(e.x == 4)
 			{
 				chan4 = e.y;
 			}
-			else if(e.x == 6)
+			else if(e.x == 5)
 			{
 				chan5 = e.y;
 			}
-			else if(e.x == 8)
+			else if(e.x == 6)
 			{
 				chan6 = e.y;
 			}
-			else if(e.x == 9)
+			else if(e.x == 7)
 			{
 				chan7 = e.y;
 			}
-			else if(e.x == 12)
+			else if(e.x == 8)
 			{
 				chan8 = e.y;
 			}
-			else if(e.x == 13)
+			else if(e.x == 9)
 			{
 				chan9 = e.y;
 			}
-			else if(e.x == 14)
+			else if(e.x == 11)
 			{
 				chana1 = e.y;
 			}
-			else if(e.x == 15)
+			else if(e.x == 12)
 			{
 				chana2 = e.y;
 			}
-			else if(e.x == 16)
+			else if(e.x == 13)
 			{
 				chana3 = e.y;
 			}
-			else if(e.x == 17)
+			else if(e.x == 14)
 			{
 				chana4 = e.y;
 			}
-			else if(e.x == 18)
+			else if(e.x == 15)
 			{
 				chana5 = e.y;
 			}
-			else if(e.x == 19)
+			else if(e.x == 16)
 			{
 				chana6 = e.y;
 			}
-			else if(e.x == 20)
+			else if(e.x == 17)
 			{
 				chana7 = e.y;
 			}
-			else if(e.x == 21)
+			else if(e.x == 18)
 			{
 				chana8 = e.y;
 			}
-			else if(e.x == 22)
+			else if(e.x == 19)
 			{
 				chana9 = e.y;
 			}
-			else if((e.x >= 22)&&(e.x <= 41)&&(e.y == 127))
+			else if((e.x >= 21)&&(e.x <= 39)&&(e.y == 127))
 			{
-				button(e.x-22);
+				button(e.x-21);
 			}
 		}
 	}
@@ -238,8 +238,8 @@ void pollKeyboard(void)
 void button(uint8_t nr)
 {
 	printf("button %i\n",nr);
-	if(nr <= apps)
+	if(nr < apps)
 	{
-		current_app = nr-1;
+		current_app = nr;
 	}
 }
