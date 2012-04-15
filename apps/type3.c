@@ -22,7 +22,7 @@ static uint8_t tick(void) {
 	
 	uint8_t x, y;
 
-	uint16_t sin1 = sini(a);
+	//uint16_t sin1 = sini(a);
 	double x0 = (double)sini(a)/512;
 	double y0 = (double)sini((a)+0x1000)/512;
 	double x1 = (double)sini(a+0x1000)/512;
@@ -30,7 +30,7 @@ static uint8_t tick(void) {
 		
 	for(y = 0; y < LED_HEIGHT; y++) 
 	{
-		uint16_t y_part =  sini(sin1+y*5*chan8);
+		//uint16_t y_part =  sini(sin1+y*5*chan8);
 
 
 		for(x = 0; x < LED_WIDTH; x++) 
