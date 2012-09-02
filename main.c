@@ -169,9 +169,9 @@ void pollKeyboard(void)
 {
 	KeyboardEvent e;
     
-    // controller ranges:
-    const int chan_begin= 0, chan_end= 7;
-    const int chana_begin= 16, chana_end= 23;
+	// controller ranges:
+	const int chan_begin= 0, chan_end= 7;
+	const int chana_begin= 16, chana_end= 23;
 
 	while(keyboard_poll(&e)) 
 	{
