@@ -22,7 +22,8 @@ void pollKeyboard(void);
 void button(uint8_t);
 unsigned long long int get_clock(void);
 
-
+uint8_t chan[16], chana[16];
+/*
 uint8_t chan1 ;
 uint8_t chan2 ;
 uint8_t chan3 ;
@@ -41,7 +42,7 @@ uint8_t chana6 ;
 uint8_t chana7 ;
 uint8_t chana8 ;
 uint8_t chana9 ;
-
+*/
 
 #endif
 
