@@ -70,22 +70,22 @@ int main(int argc, char *argv[]) {
 
 	keyboard_init();
 
-        struct termios tio;
+	struct termios tio;
  
  
-        memset(&tio,0,sizeof(tio));
-        tio.c_iflag=0;
-        tio.c_oflag=0;
-        tio.c_cflag=CS8|CREAD|CLOCAL;           // 8n1, see termios.h for more information
-        tio.c_lflag=0;
-        tio.c_cc[VMIN]=1;
-        tio.c_cc[VTIME]=5;
+	memset(&tio,0,sizeof(tio));
+	tio.c_iflag=0;
+	tio.c_oflag=0;
+	tio.c_cflag=CS8|CREAD|CLOCAL;           // 8n1, see termios.h for more information
+	tio.c_lflag=0;
+	tio.c_cc[VMIN]=1;
+	tio.c_cc[VTIME]=5;
  
-        tty_fd=open("/dev/ttyACM1", O_RDWR | O_NONBLOCK);      
-        cfsetospeed(&tio,B115200);            // 115200 baud
-        cfsetispeed(&tio,B115200);            // 115200 baud
+	tty_fd=open("/dev/ttyACM1", O_RDWR | O_NONBLOCK);      
+	cfsetospeed(&tio,B115200);            // 115200 baud
+	cfsetispeed(&tio,B115200);            // 115200 baud
  
-        tcsetattr(tty_fd,TCSANOW,&tio);
+	tcsetattr(tty_fd,TCSANOW,&tio);
 
 	for(x = 0; x < LED_WIDTH; x++) {
 		for(y = 0; y < LED_HEIGHT; y++) {
@@ -153,7 +153,7 @@ int main(int argc, char *argv[]) {
 		int delay = startTime-get_clock();
 
 
-		printf("%i\n",delay);
+		//printf("%i\n",delay);
 		if(delay > 0)
 			usleep(delay);
 		
@@ -168,89 +168,25 @@ int main(int argc, char *argv[]) {
 void pollKeyboard(void)
 {
 	KeyboardEvent e;
+    
+	// controller ranges:
+	const int chan_begin= 0, chan_end= 7;
+	const int chana_begin= 16, chana_end= 23;
 
 	while(keyboard_poll(&e)) 
 	{
-		printf("%d %d %d\n", e.x, e.y,e.type);
+		printf("%d %d %d\n", e.x, e.y, e.type);
 //		fflush(stdout);
 		
-		if(e.type == 176)
+		if(e.type>>4 == 0x0b)	// control change
 		{
-			if(e.x == 1)
+			if( (e.x>=chan_begin) && (e.x<=chan_end) )
+				chan[e.x-chan_begin]= e.y;
+			else if( (e.x>=chana_begin) && (e.x<=chana_end) )
+				chana[e.x-chana_begin]= e.y;
+			else if((e.x >= 32)&&(e.x <= 39)&&(e.y == 127))
 			{
-				chan1 = e.y;
-			}
-			else if(e.x == 2)
-			{
-				chan2 = e.y;
-			}
-			else if(e.x == 3)
-			{
-				chan3 = e.y;
-			}
-			else if(e.x == 4)
-			{
-				chan4 = e.y;
-			}
-			else if(e.x == 5)
-			{
-				chan5 = e.y;
-			}
-			else if(e.x == 6)
-			{
-				chan6 = e.y;
-			}
-			else if(e.x == 7)
-			{
-				chan7 = e.y;
-			}
-			else if(e.x == 8)
-			{
-				chan8 = e.y;
-			}
-			else if(e.x == 9)
-			{
-				chan9 = e.y;
-			}
-			else if(e.x == 11)
-			{
-				chana1 = e.y;
-			}
-			else if(e.x == 12)
-			{
-				chana2 = e.y;
-			}
-			else if(e.x == 13)
-			{
-				chana3 = e.y;
-			}
-			else if(e.x == 14)
-			{
-				chana4 = e.y;
-			}
-			else if(e.x == 15)
-			{
-				chana5 = e.y;
-			}
-			else if(e.x == 16)
-			{
-				chana6 = e.y;
-			}
-			else if(e.x == 17)
-			{
-				chana7 = e.y;
-			}
-			else if(e.x == 18)
-			{
-				chana8 = e.y;
-			}
-			else if(e.x == 19)
-			{
-				chana9 = e.y;
-			}
-			else if((e.x >= 21)&&(e.x <= 39)&&(e.y == 127))
-			{
-				button(e.x-21);
+				button(e.x-32);
 			}
 		}
 	}
