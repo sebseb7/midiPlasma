@@ -23,14 +23,14 @@ static uint8_t tick(void) {
 	uint8_t x, y;
 
 	uint16_t sin1 = sini(a);
-	double x0 = (double)sini(a*.1*chana1)/256-64;
-	double y0 = (double)sini((a*.1*chana2)+0x1000)/256-64;
-	double x1 = (double)sini(a*.1*chana3)/128-128;
-	double y1 = (double)sini((a*.1*chana4)+0x1000)/128-128;
+	double x0 = (double)sini(a*.1*chana[1-1])/256-64;
+	double y0 = (double)sini((a*.1*chana[2-1])+0x1000)/256-64;
+	double x1 = (double)sini(a*.1*chana[3-1])/128-128;
+	double y1 = (double)sini((a*.1*chana[4-1])+0x1000)/128-128;
 		
 	for(y = 0; y < LED_HEIGHT; y++) 
 	{
-		uint16_t y_part =  sini(sin1+y*5*chan8);
+		uint16_t y_part =  sini(sin1+y*5*chan[8-1]);
 
 
 		for(x = 0; x < LED_WIDTH; x++) 
@@ -40,16 +40,16 @@ static uint8_t tick(void) {
 			double dist2 = pythagoras(y1-x,x1-y);
 
 
-			uint16_t h = sini(sin1+x*5*chan9)+ y_part + sini(dist*3*chan6) + sini(dist2*chan7);
+			uint16_t h = sini(sin1+x*5*chan[9])+ y_part + sini(dist*3*chan[6]) + sini(dist2*chan[7-1]);
 			setLedXY(
 				x,y,
-				sini((h>>2)+a*0.1*chan3+x*2*chan1)>>8,
-				sini((h>>2)+a*0.1*chan4+y*3*chan2+0x1555)>>8,
-				sini((h>>2)+a*3*chan5+0x2aaa)>>8
+				sini((h>>2)+a*0.1*chan[3]+x*2*chan[1-1])>>8,
+				sini((h>>2)+a*0.1*chan[4]+y*3*chan[2-1]+0x1555)>>8,
+				sini((h>>2)+a*3*chan[5-1]+0x2aaa)>>8
 			);
 		}
 	}
-	a+=chana5*2;
+	a+=chana[5-1]*2;
 	if(a==0x4000)
 	{
 		a=0;

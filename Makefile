@@ -5,12 +5,13 @@ LDFLAGS=
 BINEXT=
 
 ifeq ($(UNAME), Darwin)
-	FLAGS   += -I/Library/Frameworks/SDL.framework/Headers
-	LDFLAGS += -lportmidi -framework SDL -framework Cocoa SDLmain.m
+	FLAGS   += -I/usr/local/include/SDL
+	LDFLAGS += -lportmidi -lSDL SDLmain.m -framework Cocoa
 endif
 
 ifeq ($(UNAME), Linux)
 	LDFLAGS +=  -lSDL
+	LDFLAGS += -lportmidi
 endif
 
 ifeq ($(UNAME), MINGW32_NT-6.1)
@@ -30,5 +31,5 @@ clean:
 	rm -f midiPlasma
 
 midiPlasma: main.c main.h Makefile $(LIB_HEADERS) $(LIB_SOURCES) $(APP_SOURCES) 
-	clang $(FLAGS) main.c $(APP_SOURCES) $(LDFLAGS) -o midiPlasma -I. $(LIB_SOURCES) -Ilibs
+	clang $(FLAGS) main.c $(APP_SOURCES) -o midiPlasma -I. $(LIB_SOURCES) -Ilibs $(LDFLAGS)
 
