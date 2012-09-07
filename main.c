@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 	struct termios tio;
 
 
-	memset(&tio,0,sizeof(tio));
+	//memset(&tio,0,sizeof(tio));
 	tio.c_iflag=0;
 	tio.c_oflag=0;
 	tio.c_cflag=CS8|CREAD|CLOCAL;           // 8n1, see termios.h for more information
@@ -175,6 +175,8 @@ void pollKeyboard(void)
 
 	while(keyboard_poll(&e)) 
 	{
+
+		
 		printf("%d %d %d\n", e.x, e.y, e.type);
 //		fflush(stdout);
 		
@@ -186,6 +188,14 @@ void pollKeyboard(void)
 				chana[e.x-chana_begin]= e.y;
 			else if((e.x >= 32)&&(e.x <= 39)&&(e.y == 127))
 			{
+		
+				for(uint8_t i = 32;i <= 39;i++)
+				{
+					keyboard_send(176,i,0);
+				}
+				keyboard_send(176,e.x,127);
+				
+				
 				button(e.x-32);
 			}
 		}
