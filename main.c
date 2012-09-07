@@ -69,6 +69,11 @@ int main(int argc, char *argv[]) {
 	int x, y;
 
 	keyboard_init();
+	for(uint8_t i = 32;i <= 39;i++)
+	{
+		keyboard_send(176,i,0);
+	}
+	keyboard_send(176,32,127);
 
 	struct termios tio;
 
@@ -189,11 +194,14 @@ void pollKeyboard(void)
 			else if((e.x >= 32)&&(e.x <= 39)&&(e.y == 127))
 			{
 		
-				for(uint8_t i = 32;i <= 39;i++)
+				if(e.x < 32+apps)
 				{
-					keyboard_send(176,i,0);
+					for(uint8_t i = 32;i <= 39;i++)
+					{
+						keyboard_send(176,i,0);
+					}
+					keyboard_send(176,e.x,127);
 				}
-				keyboard_send(176,e.x,127);
 				
 				
 				button(e.x-32);
